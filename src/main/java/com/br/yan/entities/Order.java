@@ -6,12 +6,14 @@ import java.util.HashSet;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.br.yan.entities.enums.OrderStatus;
@@ -36,6 +38,9 @@ public class Order implements Serializable{
 	
 	@OneToMany(mappedBy = "id.order") //order item possui somente o id, por isso chama o id.order
 	private Set<OrderItem> items = new HashSet<>();
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) //no caso do um para um, mapear as duas entidades para ter o mesmo id
+	private Payment payment;
 	
 	public Order() {
 		
@@ -84,6 +89,14 @@ public class Order implements Serializable{
 	public void setOrderStatus(OrderStatus orderStatus) {
 		if(orderStatus != null)
 			this.orderStatus = orderStatus.getCode();
+	}
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	@Override
