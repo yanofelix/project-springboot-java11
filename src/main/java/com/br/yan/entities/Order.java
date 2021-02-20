@@ -2,12 +2,16 @@ package com.br.yan.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.br.yan.entities.enums.OrderStatus;
@@ -29,6 +33,9 @@ public class Order implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
+	
+	@OneToMany(mappedBy = "id.order") //order item possui somente o id, por isso chama o id.order
+	private Set<OrderItem> items = new HashSet<>();
 	
 	public Order() {
 		
@@ -64,6 +71,10 @@ public class Order implements Serializable{
 
 	public void setClient(User client) {
 		this.client = client;
+	}
+	
+	public Set<OrderItem> getItems(){
+		return items;
 	}
 
 	public OrderStatus getOrderStatus() {
